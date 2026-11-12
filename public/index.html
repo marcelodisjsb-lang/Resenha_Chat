@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ConectaChat</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <main class="pagina">
+
+        <section class="chat">
+
+            <header class="topo">
+
+                <div class="marca">
+                    <div class="icone">💬</div>
+
+                    <div>
+                        <h1>ConectaChat</h1>
+                        <p>Uma conversa em tempo real</p>
+                    </div>
+                </div>
+
+                <div class="status">
+                    <span></span> Online
+                </div>
+
+            </header>
+
+            <!-- Tela de entrada -->
+
+            <section id="telaEntrada" class="entrada">
+
+                <div class="boas-vindas">
+                    <div class="emoji-grande">👋</div>
+
+                    <h2>Bem-vindo ao ConectaChat!</h2>
+
+                    <p>
+                        Escolha um nome para conversar
+                        com outras pessoas.
+                    </p>
+                </div>
+
+                <form id="formNome">
+
+                    <label for="nome">Seu nome</label>
+
+                    <input
+                        id="nome"
+                        type="text"
+                        maxlength="20"
+                        placeholder="Digite seu nome"
+                        required
+                    >
+
+                    <button type="submit">
+                        Entrar no chat
+                    </button>
+
+                </form>
+
+            </section>
+
+            <!-- Área principal -->
+
+            <section id="areaChat" class="area-chat escondido">
+
+                <!-- Participantes -->
+
+                <aside class="barra-lateral">
+
+                    <h3>
+                        Participantes
+                        <span id="quantidadeUsuarios">0</span>
+                    </h3>
+
+                    <p class="instrucao">
+                        Clique em uma pessoa para conversar no privado.
+                    </p>
+
+                    <ul id="listaUsuarios"></ul>
+
+                    <div class="dica">
+                        Converse com respeito e não compartilhe
+                        dados pessoais.
+                    </div>
+
+                </aside>
+
+                <!-- Sala geral -->
+
+                <div id="conversaPublica" class="conversa">
+
+                    <div class="cabecalho-conversa">
+
+                        <div>
+                            <strong>💬 Sala geral</strong>
+
+                            <p>
+                                Mensagens visíveis para todos.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="mensagens"
+                        class="mensagens"
+                        aria-live="polite"
+                    >
+                        <div class="mensagem-sistema">
+                            As mensagens aparecerão aqui.
+                        </div>
+                    </div>
+
+                    <div id="aviso" class="aviso"></div>
+
+                    <form id="formMensagem" class="form-mensagem">
+
+                        <div class="atalhos-emoji">
+
+                            <button type="button" class="emoji" data-emoji="😀">😀</button>
+                            <button type="button" class="emoji" data-emoji="❤️">❤️</button>
+                            <button type="button" class="emoji" data-emoji="😂">😂</button>
+                            <button type="button" class="emoji" data-emoji="🔥">🔥</button>
+                            <button type="button" class="emoji" data-emoji="👏">👏</button>
+
+                        </div>
+
+                        <div class="linha-envio">
+
+                            <input
+                                id="textoMensagem"
+                                type="text"
+                                maxlength="500"
+                                placeholder="Escreva uma mensagem..."
+                                autocomplete="off"
+                            >
+
+                            <button type="submit" class="enviar">
+                                Enviar ➤
+                            </button>
+
+                        </div>
+
+                        <small>
+                            Pressione Enter para enviar.
+                        </small>
+
+                    </form>
+
+                </div>
+
+                <!-- Conversa privada -->
+
+                <div id="conversaPrivada" class="conversa escondido">
+
+                    <div class="cabecalho-conversa cabecalho-privado">
+
+                        <div>
+                            <strong id="tituloPrivado">
+                                🔒 Conversa privada
+                            </strong>
+
+                            <p>
+                                Somente você e essa pessoa recebem as mensagens.
+                            </p>
+                        </div>
+
+                        <button
+                            type="button"
+                            id="voltarSala"
+                            class="botao-voltar"
+                        >
+                            ← Sala geral
+                        </button>
+
+                    </div>
+
+                    <div
+                        id="mensagensPrivadas"
+                        class="mensagens"
+                        aria-live="polite"
+                    >
+                        <div class="mensagem-sistema">
+                            Inicie uma conversa privada.
+                        </div>
+                    </div>
+
+                    <div id="avisoPrivado" class="aviso"></div>
+
+                    <form
+                        id="formMensagemPrivada"
+                        class="form-mensagem"
+                    >
+
+                        <div class="atalhos-emoji">
+
+                            <button type="button" class="emoji" data-emoji="😀">😀</button>
+                            <button type="button" class="emoji" data-emoji="❤️">❤️</button>
+                            <button type="button" class="emoji" data-emoji="😂">😂</button>
+                            <button type="button" class="emoji" data-emoji="🔥">🔥</button>
+                            <button type="button" class="emoji" data-emoji="👏">👏</button>
+
+                        </div>
+
+                        <div class="linha-envio">
+
+                            <input
+                                id="textoMensagemPrivada"
+                                type="text"
+                                maxlength="500"
+                                placeholder="Mensagem privada..."
+                                autocomplete="off"
+                            >
+
+                            <button type="submit" class="enviar">
+                                Enviar ➤
+                            </button>
+
+                        </div>
+
+                        <small>
+                            Esta mensagem será enviada somente para a pessoa selecionada.
+                        </small>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+        </section>
+
+        <footer>
+            ConectaChat · Projeto de programação web
+        </footer>
+
+    </main>
+
+</body>
+
+</html>
